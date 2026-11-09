@@ -1,4 +1,7 @@
 import random
+import placar as p
+from pathlib import Path
+import re
 
 def mapa (tabuleiro, mostrar = True):
 
@@ -17,8 +20,12 @@ def mapa (tabuleiro, mostrar = True):
 
 
 def cadastro():
-    player1 = input("Insira o nome do jogador 1 (X): ")
-    player2 = input("Insira o nome do jogador 2 (O): ")
+    player1 = input("Insira o nome do jogador 1 (X): ").strip()
+    while not p.cadastrar_jogador(player1):
+        pass
+    player2 = input("Insira o nome do jogador 2 (O): ").strip()
+    while not p.cadastrar_jogador(player2, nome_adversario=player1):
+        player2 = input("Insira o nome do jogador 2 (O): ").strip()
 
     return player1, player2
  
@@ -74,7 +81,7 @@ def jogar(tabuleiro):
                     mapa(tabuleiro)
                     continue
 
-                if jogador_atual == 1:
+                if jogador_atual == 1: # vez do jogador 1
                     tabuleiro[jogada] = "X"
                     mapa(tabuleiro)
                     jogada_feita.append(jogada)
@@ -82,6 +89,8 @@ def jogar(tabuleiro):
 
                     if vitoria(tabuleiro):
                         print(f"\nParabéns! {player1} GANHOU O JOGO!!!!")
+                        p.registrar_score(player1, venceu=True)
+                        p.registrar_score(player2, venceu=False)
                         break
 
                     jogador_atual = 2
@@ -92,8 +101,10 @@ def jogar(tabuleiro):
                     jogada_feita.append(jogada)
                     turnos +=1
 
-                    if vitoria(tabuleiro):
+                    if vitoria(tabuleiro): # vez do jogador 2
                         print(f"\nParabéns! {player2} GANHOU O JOGO!!!!")
+                        p.registrar_score(player1, venceu=False)
+                        p.registrar_score(player2, venceu=True)
                         break
 
                     jogador_atual = 1

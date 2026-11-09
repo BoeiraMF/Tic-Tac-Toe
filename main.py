@@ -1,5 +1,11 @@
 import jogo as j
+import placar as p
+import placar as p
+from pathlib import Path
 
+# garante a criação do arquivo "score_players.txt"
+p.garantir_score()
+print("Arquivo de score encontrado com sucesso!")
 
 while True:
 
@@ -26,7 +32,7 @@ while True:
 
 #------Placar------
         elif menu == 2:
-            print("Em breve!!!")
+            p.consultar_score()
 
 
 
